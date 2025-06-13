@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title> Mentiroso </title>
+</head>
+
+<body>
+    <link rel="stylesheet" href="index.css">
+    <h1> MENTIROSO </h1>
+    
+    <br>
+    <br>
+    <br>
+    <div>
+        <span></span>
+        <button onclick="game.Restart()" class="PLAY-BUTTON"> Restart </button>
+        <span></span>
+        <button onclick="game.Shuffle_Open()" class="PLAY-BUTTON"> Shuffle Open </button>
+        <span></span>
+        <button onclick="game.Shuffle_Hidden()" class="PLAY-BUTTON"> Shuffle Hidden </button>
+        <span></span>
+        <button onclick="game.Cover_Reveal()" class="PLAY-BUTTON"> Cover / Reveal </button>
+        <span></span>
+        <button onclick="game.Confirm()" class="PLAY-BUTTON" id="confirm_button"> Confirm </button>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div>
+        <span id="first_würfel"></span>
+        <img id="würfel_eins" src="Verdeckter-Würfel.png" onclick="game.MarkDice(0)">
+        <span class="würfel_span"></span>
+        <img id="würfel_zwei" src="Verdeckter-Würfel.png" onclick="game.MarkDice(1)">
+        <span class="würfel_span"></span>
+        <img id="würfel_drei" src="Verdeckter-Würfel.png" onclick="game.MarkDice(2)">
+        <span class="würfel_span"></span>
+        <img id="würfel_vier" src="Verdeckter-Würfel.png" onclick="game.MarkDice(3)">
+        <span class="würfel_span"></span>
+        <img id="würfel_fünf" src="Verdeckter-Würfel.png" onclick="game.MarkDice(4)">
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>

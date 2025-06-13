@@ -1,0 +1,23 @@
+body{
+    background-color:rgb(10, 137, 196);
+}
+h1{
+    text-align: center;
+}
+.PLAY-BUTTON{
+    background-color: gray;
+    text-align: center;
+    height: 50px;
+    width: 200px;
+    font-size: 20px;
+    border-radius: 20px;
+}
+span{
+    margin-right: 150px;
+}
+.würfel_span{
+    margin-left: 50px;
+}
+#first_würfel{
+    margin-left: 20px;
+}
