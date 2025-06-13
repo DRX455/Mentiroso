@@ -271,16 +271,6 @@ Confirm(){
     }
 }
 
-NoCombination(){
-    for(let i = 0; i < 4; i++){
-        for(let k = i + 1; k < 5; k++){
-            if(this.dice_array[i].GetSymbol() === this.dice_array[k].GetSymbol())
-                return false;
-        }
-    }
-    return true;
-}
-
 MarkDice(number){
     if(this.dice_array[number].GetIsMarkable())
         this.dice_array[number].SetIsMarked(number);
