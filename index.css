@@ -1,5 +1,6 @@
 body{
-    background-color:rgb(10, 137, 196);
+    background-color: rgb(10, 137, 196);
+    color: rgb(0, 0, 0);
 }
 h1{
     text-align: center;
@@ -10,6 +11,7 @@ h1{
     height: 100px;
     width: 150px;
     font-size: 20px;
+    color: rgb(0, 0, 0);
     border-radius: 20px;
 }
 .button_span{
