@@ -1,28 +1,313 @@
 body{
+    color: rgb(0, 0, 0);
     background-color: rgb(10, 137, 196);
+}
+#mentiroso_header{
+    text-align: center;
+    font-size: 40px;
     color: rgb(0, 0, 0);
 }
-h1{
+.header{
     text-align: center;
+    font-size: 50px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
 }
-.PLAY-BUTTON{
-    background-color: gray;
-    text-align: center;
+#open_settings_button_image{
+    position: absolute;
+    right: 100px;
+    height: 50px;
+    width: 50px;
+}
+#settings_menu{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(0, 0, 0, 0.9);
+    z-index: 2;
+}
+.settings_button{
+    position: relative;
+    top: -5px;
+    left: 394px;
     height: 100px;
     width: 150px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(128, 128, 128);
+    text-align: center;
+    font-size: 20px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+.rules_explanation{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    color: rgb(0, 0, 0);
+    background-color: rgb(10, 137, 196);
+    font-size: 30px;
+    z-index: 2;
+}
+.rules_explanation_paragraph{
+    color: rgb(0, 0, 0);
+    margin-left: 30px;
+}
+.language_button_image{
+    height: 80px;
+    width: 120px;
+    margin-left: 30px;
+    margin-right: 20px;
+}
+.rules_explanation_button{
+    background-color: rgb(128, 128, 128);
+    text-align: center;
+    position: relative;
+    top: -35px;
+    height: 50px;
+    width: 100px;
+    color: rgb(0, 0, 0);
+    border-radius: 10px;
+    font-size: 20px;
+    margin-left: 30px;
+}
+#leaderboard{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(0, 0, 0, 0.9);
+}
+#play_button_layout{
+    z-index: 1;
+}
+.play_button{
+    position: relative;
+    left: 50px;
+    height: 100px;
+    width: 150px;
+    text-align: center;
     font-size: 20px;
     color: rgb(0, 0, 0);
+    background-color: rgb(128, 128, 128);
     border-radius: 20px;
+    margin-right: 13px;
 }
-.button_span{
-    margin-right: 12px;
+#dice_image_layout{
+    z-index: 1;
 }
-#first_button{
+.dice_image{
+    position: relative;
+    left: 50px;
+    margin-right: 10px;
+}
+#player_list{
+    display: none;
+    position: relative;
+    left: 51px;
+    width: 821px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(10, 137, 196);
+    z-index: 1;
+}
+#player_list_list{
+    font-size: 30px;
+    padding-left: 0px;
+    list-style: none;
+}
+.player_list_button{
+    position: relative;
+    left: 53px;
+    height: 50px;
+    width: 200px;
+    text-align: center;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(128, 128, 128);
+    border-radius: 10px;
+    margin-left: 30px;
+}
+.player_list_element{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.player_word_span{
+    position: absolute;
+    left: 570px;
+    height: 30px;
+    width: 250px;
+    text-align: center;
+    font-size: 30px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(10, 137, 196);
+    margin-top: 5px;
+}
+#player_addition{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    color: rgb(0, 0, 0);
+    background-color: rgb(0, 0, 0, 0.9);
+    z-index: 2;
+}
+#player_addition_text_input{
+    position: relative;
+    top: 145px;
+    left: 362px;
+    height: 40px;
+    width: 200px;
+    text-align: center;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px;
+}
+.player_addition_button{
+    position: relative;
+    top: 300px;
+    left: 150px;
+    height: 50px;
+    width: 100px;
+    text-align: center;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(128, 128, 128);
+    border-radius: 15px;
+    margin-right: 10px;
+}
+#player_deletion{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    color: rgb(0, 0, 0);
+    background-color: rgb(0, 0, 0, 0.9);
+    overflow-y: scroll;
+    z-index: 2;
+}
+#player_deletion_list{
+    position: relative;
+    left: 59px;
+    width: 821px;
+    font-size: 30px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(10, 137, 196);
+    padding-left: 0px;
+    list-style: none;
+}
+.player_deletion_button{
+    position: relative;
+    left: 13px;
+    height: 50px;
+    width: 200px;
+    text-align: center;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(128, 128, 128);
+    border-radius: 15px;
+    margin-left: 30px;
+}
+.player_deletion_list_button{
+    position: relative;
+    left: 0px;
+    height: 50px;
+    width: 400px;
+    text-align: center;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(128, 128, 128);
+    border-radius: 10px;
+}
+.marked_button_delete{
+    background-color: rgb(255, 255, 0);
+}
+#point_addition{
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    color: rgb(0, 0, 0);
+    background-color: rgb(0, 0, 0, 0.9);
+    z-index: 2;
+}
+#point_addition_list{
+    position: relative;
+    left: 59px;
+    height: 500px;
+    width: 821px;
+    font-size: 30px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(10, 137, 196);
+    padding-left: 0px;
+    list-style: none;
+}
+.point_addition_button{
+    height: 50px;
+    width: 200px;
+    font-size: 20px;
+    text-align: center;
+    color: rgb(0, 0, 0);
+    background-color: rgb(128, 128, 128);
+    border-radius: 10px;
+    margin-left: 100px;
+}
+.point_addition_list_button{
+    position: relative;
+    left: 50px;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(128, 128, 128);
+    border-radius: 25px;
     margin-left: 50px;
 }
-.würfel_span{
-    margin-left: 10px;
+#warning_player_list_too_long{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(0, 0, 0, 0.9);
+    z-index: 3;
 }
-#first_würfel{
-    margin-left: 50px;
+.warning_paragraph{
+    position: relative;
+    top: 50px;
+    left: 267px;
+    height: 120px;
+    width: 400px;
+    text-align: center;
+    font-size: 30px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    padding-top: 10px;
+}
+.warning_button{
+    position: relative;
+    top: 50px;
+    left: 570px;
+    height: 50px;
+    width: 100px;
+    text-align: center;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(128, 128, 128);
+    border-radius: 10px;
 }
