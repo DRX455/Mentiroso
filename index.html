@@ -7,38 +7,141 @@
 
 <body>
     <link rel="stylesheet" href="index.css">
-    <h1> MENTIROSO </h1>
-    
+    <h1 id="mentiroso_header">
+        MENTIROSO
+        <input type="image" id="open_settings_button_image" src="Einstellungen-Symbol.png" onclick="game.OpenSettings()">
+    </h1>
+
+    <div id="settings_menu">
+        <h1 class="header">SETTINGS</h1>
+        <button class="settings_button" onclick="game.SwitchRulesExplanation()">How To Play</button>
+        <br>
+        <button id="point_system_button" class="settings_button" onclick="game.SwitchPointSystem()">Play With Points</button>
+        <br>
+        <button class="settings_button" onclick="game.ShowLeaderboard()">Leaderboard (Coming Soon)</button>
+        <br>
+        <button id="close_settings_button" class="settings_button" onclick="game.CloseSettings()">Close Settings</button>
+    </div>
+
+    <div id="rules_explanation_english" class="rules_explanation">
+        <h1 class="header">EXPLANATION OF THE RULES</h1>
+        <p class="rules_explanation_paragraph">
+            To Start a new game, press the "Start/Restart" button. All of the<br>
+            other buttons are deactivated in the first round. This button can be<br>
+            pressed at any time to start a new round. After pressing the<br>
+            "Start/Restart"button, two dices will automatically be shuffled open<br>
+            and three dices hidden. When the "Cover/Reveal" button is pressed,<br>
+            the hidden shuffled dices will be revealed, pressing again causes<br>
+            them to be covered again. You can confirm your dices by pressing<br>
+            the "Confirm Dices" button and passing them to the next player.<br>
+            To press this button, at least one dice has to be shuffled hidden<br>
+            and covered (at least one dice has to be covered). When the dices<br>
+            are not confirmed through the "Confirm Dices" button, the next<br>
+            player will not be able to shuffle all dices!<br>
+            Except for the first round, every dice can be shuffled once per<br>
+            round. To shuffle the dices, press on them to mark them and press<br>
+            the "Shuffle Open" or the "Shuffle Hidden" button to shuffle the<br>
+            dices open or hidden respectively. Combinations of open and hidden<br>
+            shuffled dices are possible. Have fun jiggling!
+        </p>
+        <input type="image" class="language_button_image" src="Großbritannien-Flagge.png">
+        <input type="image" class="language_button_image" src="Deutschland-Flagge.png" onclick="game.ChangeLanguage(2)">
+        <button class="rules_explanation_button" onclick="game.SwitchRulesExplanation()">Back</button>
+    </div>
+
+    <div id="rules_explanation_german" class="rules_explanation">
+        <h1 class="header">ERKLÄRUNG DER REGELN</h1>
+        <p class="rules_explanation_paragraph">
+            Um ein Spiel zu starten, die "Start/Restart" Taste drücken, jede andere<br>
+            Taste kann am Anfang nicht gedrückt werden. Diese Taste kann<br>
+            jederzeit gedrückt werden, um eine neue Runde zu beginnen.<br>
+            Nachdem die "Start/Restart" Taste gedrückt wurde,<br>
+            werden automatisch 2 Würfel offen und 3 verdeckt gewürfelt.<br>
+            Mit der "Cover/Reveal" Taste können die verdeckt gewürfelten Würfel<br>
+            aufgedeckt und wieder verdeckt werden, bevor sie mit der "Confirm Dices"<br>
+            Taste bestätigt und an den nächsten Spieler übergeben werden.<br>
+            Die Würfel können nur bestätigt werden, wenn mindestens ein Würfel<br>
+            verdeckt gewürfelt wurde und verdeckt ist (mindestens ein verdeckter).<br>
+            Wenn sie nicht durch die "Confirm Dices" Taste bestätigt werden,<br>
+            kann der nächste Spieler nicht alle Würfel nutzen!<br>
+            Abgesehen von der ersten Runde, kann jeder Würfel in jeder Runde<br>
+            maximal einmal gewürfelt werden, indem die Würfel durch Antippen<br>
+            ausgewählt und durch die "Shuffle Open" bzw. "Shuffle Hidden" Taste<br>
+            offen bzw. verdeckt gewürfelt werden. Kombinationen aus offen und<br>
+            verdeckt gewürfelten Würfeln ist möglich. Viel Spaß beim Jigglen!
+        </p>
+        <input type="image" class="language_button_image" src="Großbritannien-Flagge.png" onclick="game.ChangeLanguage(1)">
+        <input type="image" class="language_button_image" src="Deutschland-Flagge.png">
+        <button class="rules_explanation_button" onclick="game.SwitchRulesExplanation()">Close</button>
+    </div>
+
+    <div id="leaderboard">
+        <h1 class="header">Leaderboard</h1>
+        <br>
+    </div>
+
     <br>
-    <div>
-        <span id="first_button"></span>
-        <button onclick="game.Restart()" class="PLAY-BUTTON"> Start / Restart </button>
-        <span class="button_span"></span>
-        <button onclick="game.Shuffle_Open()" class="PLAY-BUTTON"> Shuffle Open </button>
-        <span class="button_span"></span>
-        <button onclick="game.Shuffle_Hidden()" class="PLAY-BUTTON"> Shuffle Hidden </button>
-        <span class="button_span"></span>
-        <button onclick="game.Cover_Reveal()" class="PLAY-BUTTON"> Cover / Reveal </button>
-        <span class="button_span"></span>
-        <button onclick="game.Confirm()" class="PLAY-BUTTON" id="confirm_button"> Confirm Dices </button>
+    <div id="play_button_layout">
+        <button class="play_button" onclick="game.Restart()"> Start / Restart </button>
+        <button class="play_button" onclick="game.Shuffle_Open()"> Shuffle Open </button>
+        <button class="play_button" onclick="game.Shuffle_Hidden()"> Shuffle Hidden </button>
+        <button class="play_button" onclick="game.Cover_Reveal()"> Cover / Reveal </button>
+        <button id="confirm_button" class="play_button" onclick="game.Confirm()"> Confirm Dices </button>
     </div>
 
     <br>
     <br>
     <br>
 
-    <div>
-        <span id="first_würfel"></span>
-        <img id="würfel_eins" src="Verdeckter-Würfel.png" onclick="game.MarkDice(0)">
-        <span class="würfel_span"></span>
-        <img id="würfel_zwei" src="Verdeckter-Würfel.png" onclick="game.MarkDice(1)">
-        <span class="würfel_span"></span>
-        <img id="würfel_drei" src="Verdeckter-Würfel.png" onclick="game.MarkDice(2)">
-        <span class="würfel_span"></span>
-        <img id="würfel_vier" src="Verdeckter-Würfel.png" onclick="game.MarkDice(3)">
-        <span class="würfel_span"></span>
-        <img id="würfel_fünf" src="Verdeckter-Würfel.png" onclick="game.MarkDice(4)">
+    <div id="dice_image_layout">
+        <img id="dice_one" class="dice_image" src="Verdeckter-Würfel.png" onclick="game.MarkDice(0)">
+        <img id="dice_two" class="dice_image" src="Verdeckter-Würfel.png" onclick="game.MarkDice(1)">
+        <img id="dice_three" class="dice_image" src="Verdeckter-Würfel.png" onclick="game.MarkDice(2)">
+        <img id="dice_four" class="dice_image" src="Verdeckter-Würfel.png" onclick="game.MarkDice(3)">
+        <img id="dice_five" class="dice_image" src="Verdeckter-Würfel.png" onclick="game.MarkDice(4)">
     </div>
+
+    <div id="player_list">
+        <ul id="player_list_list"> List:
+            <button class="player_list_button" onclick="game.SwitchPlayerAddition()">Add Player</button>
+            <button class="player_list_button" onclick="game.SwitchPlayerDeletion()">Remove Player</button>
+            <button class="player_list_button" onclick="game.SwitchPointAddition()">Add Point</button>
+            <br>
+        </ul>
+    </div>
+
+    <div id="player_addition">
+        <input type="text" id="player_addition_text_input" maxlength="20">
+        <button class="player_addition_button" onclick="game.ConfirmPlayerName()">Confirm</button>
+        <button class="player_addition_button" onclick="game.SwitchPlayerAddition()">Back</button>
+    </div>
+
+    <div id="player_deletion">
+        <ul id="player_deletion_list"> Players:
+            <button class="player_deletion_button" onclick="game.RemovePlayersFromList()">Remove</button>
+            <button class="player_deletion_button" onclick="game.ClearPlayerList()">Clear Player List</button>
+            <button class="player_deletion_button" onclick="game.SwitchPlayerDeletion()">Back</button>
+            <br>
+        </ul>
+    </div>
+
+    <div id="point_addition">
+        <ul id="point_addition_list"> Players:
+            <button class="point_addition_button" onclick="game.ClearPointList()">Clear Point List</button>
+            <button class="point_addition_button" onclick="game.SwitchPointAddition()">Back</button>
+            <br>
+        </ul>
+    </div>
+
+    <div id="warning_player_list_too_long">
+        <p class="warning_paragraph">
+            Player list is too long!<br>
+            The list can only contain<br>
+            up to 20 players.
+        </p>
+        <button class="warning_button" onclick="game.Warning_PlayerListTooLong()">OK</button>
+    </div>    
+
     <script src="index.js"></script>
 </body>
 </html>
