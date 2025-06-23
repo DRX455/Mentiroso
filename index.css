@@ -60,6 +60,11 @@ body{
     color: rgb(0, 0, 0);
     margin-left: 30px;
 }
+.rules_explanation_ending{
+    font-size: 50px;
+    color: rgb(0, 0, 0);
+    margin-left: 30px;
+}
 .language_button_image{
     height: 80px;
     width: 120px;
