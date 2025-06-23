@@ -198,9 +198,6 @@ UpdateWord(){
         case 9: this.word = "MENTIROSO"; break;
         default: break; 
     }
-
-    console.log("Updated");
-    console.log(" " + this.word);
 }
 
 ResetCounter(){
@@ -214,7 +211,8 @@ ResetCounter(){
 class IDManager{
 
 constructor(
-    ID_number, player_li_lino_ID, player_span_ID, player_del_lino_ID, player_del_but_ID, point_lino_ID, point_inc_but_ID, point_dec_but_ID
+    ID_number, player_li_lino_ID, player_span_ID, player_del_lino_ID, 
+    player_del_but_ID, point_lino_ID, point_dec_but_ID, point_inc_but_ID
 ){
     this.ID = ID_number;
     this.player_list_listnode_ID = player_li_lino_ID;
@@ -222,8 +220,8 @@ constructor(
     this.player_delete_listnode_ID = player_del_lino_ID;
     this.player_delete_button_ID = player_del_but_ID;
     this.point_list_listnode_ID = point_lino_ID;
-    this.point_increase_button_ID = point_inc_but_ID;
     this.point_decrease_button_ID = point_dec_but_ID;
+    this.point_increase_button_ID = point_inc_but_ID;
 }
 
 GetID(){
@@ -484,18 +482,17 @@ AddPlayerToList(player_name){
 
         //Normal List Element
 
-        let new_list_element = document.createElement("li");
-        let new_span = document.createElement("span");
+        let new_listnode_element = document.createElement("li");
+        let new_span_element = document.createElement("span");
 
-        new_list_element.appendChild(document.createTextNode(player_name));
-        new_list_element.appendChild(new_span);
-        this.player_list_list.appendChild(new_list_element);
-        
-        new_list_element.classList.add("player_list_element");
-        new_list_element.id = "player_" + ID_number;
-        new_span.id = "player_span_" + ID_number;
-        new_span.classList.add("player_word_span");
-        new_span.style.top = 512 + (40 * this.IDManager_array.length);
+        new_listnode_element.appendChild(document.createTextNode(player_name));
+        new_listnode_element.appendChild(new_span_element);
+        this.player_list_list.appendChild(new_listnode_element);
+
+        new_listnode_element.id = "player_" + ID_number;
+        new_listnode_element.classList.add("player_list_element");
+        new_span_element.id = "player_span_" + ID_number;
+        new_span_element.classList.add("player_word_span");
 
         //Delete List Element
 
@@ -514,27 +511,28 @@ AddPlayerToList(player_name){
         //Point List Element
 
         let new_point_list_element = document.createElement("li");
-        let point_list_increase_button = document.createElement("button");
         let point_list_decrease_button = document.createElement("button");
+        let point_list_increase_button = document.createElement("button");
 
         new_point_list_element.innerText = player_name;
         this.point_list.appendChild(new_point_list_element);
-        new_point_list_element.appendChild(point_list_increase_button);
         new_point_list_element.appendChild(point_list_decrease_button);
+        new_point_list_element.appendChild(point_list_increase_button);
 
+        new_point_list_element.classList.add("point_addition_listnode");
         new_point_list_element.id = "point_addition_list_element" + ID_number;
-        point_list_increase_button.id = "point_list_increase_button_" + ID_number;
         point_list_decrease_button.id = "point_list_decrease_button_" + ID_number;
-
-        point_list_increase_button.classList.add("point_addition_list_button");
-        point_list_increase_button.classList.add("point_increase");
-        point_list_increase_button.addEventListener('click', game.AddPointToPlayer);
-        point_list_increase_button.innerText = "+";
+        point_list_increase_button.id = "point_list_increase_button_" + ID_number;
 
         point_list_decrease_button.classList.add("point_addition_list_button");
         point_list_decrease_button.classList.add("point_decrease");
         point_list_decrease_button.addEventListener('click', game.AddPointToPlayer);
         point_list_decrease_button.innerText = "-";
+        
+        point_list_increase_button.classList.add("point_addition_list_button");
+        point_list_increase_button.classList.add("point_increase");
+        point_list_increase_button.addEventListener('click', game.AddPointToPlayer);
+        point_list_increase_button.innerText = "+";
 
         //Player of Player-Array
 
@@ -543,11 +541,12 @@ AddPlayerToList(player_name){
         //Linking All Elements
 
         this.IDManager_array.push(new IDManager(
-            ID_number, new_list_element.id, new_span.id, new_deletion_list_element.id, new_button.id, new_point_list_element.id, point_list_increase_button.id, point_list_decrease_button.id
+            ID_number, new_listnode_element.id, new_span_element.id, new_deletion_list_element.id, new_button.id, new_point_list_element.id, point_list_decrease_button.id, point_list_increase_button.id
         ));
     }
-    else
+    else{
         this.Warning_PlayerListTooLong();    
+    }
 }
 
 GetUnusedID(){
@@ -591,15 +590,17 @@ RemovePlayersFromList(){
             document.getElementById(IDM.GetDeleteListnodeID()).removeChild(document.getElementById(IDM.GetDeleteButtonID()));
             this.player_deletion_list.removeChild(document.getElementById(IDM.GetDeleteListnodeID()));
 
-            document.getElementById(IDM.GetPointListnodeID()).removeChild(document.getElementById(IDM.GetIncreaseButtonID()));
             document.getElementById(IDM.GetPointListnodeID()).removeChild(document.getElementById(IDM.GetDecreaseButtonID()));
+            document.getElementById(IDM.GetPointListnodeID()).removeChild(document.getElementById(IDM.GetIncreaseButtonID()));
             this.point_list.removeChild(document.getElementById(IDM.GetPointListnodeID()));
 
             this.ID_array[IDM.GetID()] = false;
             this.IDManager_array.splice(i, 1);
+            this.player_array.splice(i, 1);
             i--;
         }
     }
+    this.SwitchPlayerDeletion();
 }
 
 MarkButton(){
@@ -626,12 +627,14 @@ ClearPlayerList(){
             document.getElementById(IDM.GetDeleteListnodeID()).removeChild(document.getElementById(IDM.GetDeleteButtonID()));
             this.player_deletion_list.removeChild(document.getElementById(IDM.GetDeleteListnodeID()));
 
-            document.getElementById(IDM.GetPointListnodeID()).removeChild(document.getElementById(IDM.GetIncreaseButtonID()));
             document.getElementById(IDM.GetPointListnodeID()).removeChild(document.getElementById(IDM.GetDecreaseButtonID()));
+            document.getElementById(IDM.GetPointListnodeID()).removeChild(document.getElementById(IDM.GetIncreaseButtonID()));
             this.point_list.removeChild(document.getElementById(IDM.GetPointListnodeID()));
         }
 
         this.IDManager_array.splice(0, array_length);
+        this.player_array.splice(0, array_length);
+        this.SwitchPlayerDeletion();
 
         for(let j = 0; j < 20; j++){
             this.ID_array[j] = false;
@@ -655,7 +658,6 @@ AddPointToPlayer(){
     let right_ID;
 
     if(this.classList.contains("point_increase")){
-        this.classList.add("marked_button_point_increase");
         status = true;
         for(let i = 0; i < game.IDManager_array.length; i++){
             if(game.IDManager_array[i].GetIncreaseButtonID() === this.id){
@@ -665,7 +667,6 @@ AddPointToPlayer(){
         }
     }
     else if(this.classList.contains("point_decrease")){
-        this.classList.add("marked_button_point_decrease");
         status = false;
         for(let j = 0; j < game.IDManager_array.length; j++){
             if(game.IDManager_array[j].GetDecreaseButtonID() === this.id){
@@ -675,6 +676,7 @@ AddPointToPlayer(){
         }
     }
 
+    game.SwitchPointAddition();
     game.PointAdditionByID(right_ID, status);
     game.UpdateSpanWord(right_ID);
 }
@@ -703,6 +705,7 @@ PointAdditionByID(right_ID, status){
 ClearPointList(){
     let array_length = this.player_array.length;
 
+    this.SwitchPointAddition();
     for(let i = 0; i < array_length; i++){
         this.player_array[i].ResetCounter();
         this.UpdateSpanWord(this.player_array[i].GetID());
