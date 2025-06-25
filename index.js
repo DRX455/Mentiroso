@@ -169,7 +169,11 @@ GetCounter(){
     return this.counter;
 }
 
-ChangeCounter(number){
+    GetWord(){
+    return this.word;
+}
+
+UpdateCounter(number){
     if(number === 1 && this.counter < 9){
         this.counter += 1;
         this.UpdateWord();
@@ -178,10 +182,6 @@ ChangeCounter(number){
         this.counter -= 1;
         this.UpdateWord();
     }
-}
-
-GetWord(){
-    return this.word;
 }
 
 UpdateWord(){
@@ -210,18 +210,15 @@ ResetCounter(){
 
 class IDManager{
 
-constructor(
-    ID_number, player_li_lino_ID, player_span_ID, player_del_lino_ID, 
-    player_del_but_ID, point_lino_ID, point_dec_but_ID, point_inc_but_ID
-){
+constructor(ID_number){
     this.ID = ID_number;
-    this.player_list_listnode_ID = player_li_lino_ID;
-    this.player_list_span_ID = player_span_ID;
-    this.player_delete_listnode_ID = player_del_lino_ID;
-    this.player_delete_button_ID = player_del_but_ID;
-    this.point_list_listnode_ID = point_lino_ID;
-    this.point_decrease_button_ID = point_dec_but_ID;
-    this.point_increase_button_ID = point_inc_but_ID;
+    this.player_list_listnode_ID = "player_" + ID_number;
+    this.player_list_span_ID = "player_span_" + ID_number;
+    this.player_delete_listnode_ID = "player_deletion_list_element_" + ID_number;
+    this.player_delete_button_ID = "player_deletion_list_button_" + ID_number;
+    this.point_list_listnode_ID = "point_addition_list_element" + ID_number;
+    this.point_decrease_button_ID = "point_list_decrease_button_" + ID_number;
+    this.point_increase_button_ID = "point_list_increase_button_" + ID_number;
 }
 
 GetID(){
@@ -263,8 +260,8 @@ class Game{
 
 dice_array = [];
 player_array = [];
-ID_array = [];
 IDManager_array = [];
+ID_array = [];
 
 constructor(){
     for(let i = 0; i < 5; i++){
@@ -275,29 +272,34 @@ constructor(){
         this.ID_array[j] = false;
     }
 
-    this.full_word = "MENTIROSO";
+    //Game-Logic-Booleans
+
     this.is_confirmed = false;
     this.is_confirmable = true;
     this.is_covered = true;
-    this.settings_menu = document.getElementById("settings_menu");
+
+    //Settings-Booleans
+
     this.rules_explanation_active = false;
-    this.rules_explanation = document.getElementById("rules_explanation_english");
     this.point_system_active = false;
-    this.point_system_button = document.getElementById("point_system_button");
-    this.player_list = document.getElementById("player_list");
-    this.player_list_list = document.getElementById("player_list_list");
+
+    //List-Booleans
+    
     this.player_addition_active = false;
-    this.player_addition = document.getElementById("player_addition");
     this.player_deletion_active = false;
-    this.player_deletion = document.getElementById("player_deletion");
-    this.player_deletion_list = document.getElementById("player_deletion_list");
     this.point_addition_active = false;
-    this.point_addition = document.getElementById("point_addition");
-    this.point_list = document.getElementById("point_addition_list");
     this.point_addition_multiple_changes_active = false;
-    this.point_addition_multiple_changes_button = document.getElementById("point_addition_multiple_changes_button");
+
+    //List-Documents
+
+    this.player_list_list = document.getElementById("player_list_list");
+    this.player_deletion_list = document.getElementById("player_deletion_list");
+    this.point_list = document.getElementById("point_addition_list");
+    
+    //Extra
+    
+    this.rules_explanation = document.getElementById("rules_explanation_english");
     this.warning_active = false;
-    this.warning_player_list = document.getElementById("warning_player_list_too_long");
 }
 
 Restart(){
@@ -412,11 +414,11 @@ MarkDice(number){
 //Setting-Funtions
 
 OpenSettings(){
-    this.settings_menu.style.display = "block";
+    document.getElementById("settings_menu").style.display = "block";
 }
 
 CloseSettings(){
-    this.settings_menu.style.display = "none";
+    document.getElementById("settings_menu").style.display = "none";
 }
 
 ChangeLanguage(new_language){
@@ -439,21 +441,21 @@ SwitchRulesExplanation(){
     }
     else{
         this.rules_explanation_active = true;
-        this.CloseSettings();
         this.rules_explanation.style.display = "block";
+        this.CloseSettings();
     }
 }
 
 SwitchPointSystem(){
     if(this.point_system_active){
         this.point_system_active = false;
-        this.player_list.style.display = "none";
-        this.point_system_button.style.backgroundColor = '#808080';
+        document.getElementById("player_list").style.display = "none";
+        document.getElementById("point_system_button").style.backgroundColor = '#808080';
     }
     else{
         this.point_system_active = true;
-        this.player_list.style.display = "block";
-        this.point_system_button.style.backgroundColor = '#ffff00';
+        document.getElementById("player_list").style.display = "block";
+        document.getElementById("point_system_button").style.backgroundColor = '#ffff00';
         this.CloseSettings();
     }
 }
@@ -461,12 +463,12 @@ SwitchPointSystem(){
 SwitchPlayerAddition(){
     if(this.player_addition_active){
         this.player_addition_active = false;
-        this.player_addition.style.display = "none";
+        document.getElementById("player_addition").style.display = "none";
         document.getElementById("player_addition_text_input").value = "";
     }
     else{
         this.player_addition_active = true;
-        this.player_addition.style.display = "block";
+        document.getElementById("player_addition").style.display = "block";
     }
 }
 
@@ -480,73 +482,70 @@ AddPlayerToList(player_name){
     if(this.IDManager_array.length < 20){
         let ID_number = this.GetUnusedID();
 
-        //Normal List Element
-
-        let new_listnode_element = document.createElement("li");
-        let new_span_element = document.createElement("span");
-
-        new_listnode_element.appendChild(document.createTextNode(player_name));
-        new_listnode_element.appendChild(new_span_element);
-        this.player_list_list.appendChild(new_listnode_element);
-
-        new_listnode_element.id = "player_" + ID_number;
-        new_listnode_element.classList.add("player_list_element");
-        new_span_element.id = "player_span_" + ID_number;
-        new_span_element.classList.add("player_word_span");
-
-        //Delete List Element
-
-        let new_deletion_list_element = document.createElement("li");
-        let new_button = document.createElement("button");
-
-        new_button.innerText = player_name;
-        this.player_deletion_list.appendChild(new_deletion_list_element);
-        new_deletion_list_element.appendChild(new_button);
-
-        new_deletion_list_element.id = "player_deletion_list_element_" + ID_number;
-        new_button.id = "player_deletion_list_button_" + ID_number;
-        new_button.classList.add("player_deletion_list_button");
-        new_button.addEventListener("click", game.MarkButton);
-
-        //Point List Element
-
-        let new_point_list_element = document.createElement("li");
-        let point_list_decrease_button = document.createElement("button");
-        let point_list_increase_button = document.createElement("button");
-
-        new_point_list_element.innerText = player_name;
-        this.point_list.appendChild(new_point_list_element);
-        new_point_list_element.appendChild(point_list_decrease_button);
-        new_point_list_element.appendChild(point_list_increase_button);
-
-        new_point_list_element.classList.add("point_addition_listnode");
-        new_point_list_element.id = "point_addition_list_element" + ID_number;
-        point_list_decrease_button.id = "point_list_decrease_button_" + ID_number;
-        point_list_increase_button.id = "point_list_increase_button_" + ID_number;
-
-        point_list_decrease_button.classList.add("point_addition_list_button");
-        point_list_decrease_button.classList.add("point_decrease");
-        point_list_decrease_button.addEventListener('click', game.AddPointToPlayer);
-        point_list_decrease_button.innerText = "-";
-        
-        point_list_increase_button.classList.add("point_addition_list_button");
-        point_list_increase_button.classList.add("point_increase");
-        point_list_increase_button.addEventListener('click', game.AddPointToPlayer);
-        point_list_increase_button.innerText = "+";
-
-        //Player of Player-Array
+        this.AddPlayerToPlayerList(ID_number, player_name);
+        this.AddPlayerToDeleteList(ID_number, player_name);
+        this.AddPlayerToPointList(ID_number, player_name);
 
         this.player_array.push(new Player(ID_number));
-
-        //Linking All Elements
-
-        this.IDManager_array.push(new IDManager(
-            ID_number, new_listnode_element.id, new_span_element.id, new_deletion_list_element.id, new_button.id, new_point_list_element.id, point_list_decrease_button.id, point_list_increase_button.id
-        ));
+        this.IDManager_array.push(new IDManager(ID_number));
     }
     else{
-        this.Warning_PlayerListTooLong();    
+        this.Warning_PlayerListTooLong();
     }
+}
+
+AddPlayerToPlayerList(ID_number, player_name){
+    let new_listnode_element = document.createElement("li");
+    let new_span_element = document.createElement("span");
+
+    new_listnode_element.appendChild(document.createTextNode(player_name));
+    new_listnode_element.appendChild(new_span_element);
+    this.player_list_list.appendChild(new_listnode_element);
+
+    new_listnode_element.id = "player_" + ID_number;
+    new_listnode_element.classList.add("player_list_element");
+    new_span_element.id = "player_span_" + ID_number;
+    new_span_element.classList.add("player_word_span");
+}
+
+AddPlayerToDeleteList(ID_number, player_name){
+    let new_deletion_listnode_element = document.createElement("li");
+    let new_deletion_button_element = document.createElement("button");
+
+    new_deletion_button_element.innerText = player_name;
+    new_deletion_listnode_element.appendChild(new_deletion_button_element);
+    this.player_deletion_list.appendChild(new_deletion_listnode_element);
+
+    new_deletion_listnode_element.id = "player_deletion_list_element_" + ID_number;
+    new_deletion_button_element.id = "player_deletion_list_button_" + ID_number;
+    new_deletion_button_element.classList.add("player_deletion_list_button");
+    new_deletion_button_element.addEventListener("click", game.MarkButton);
+}
+
+AddPlayerToPointList(ID_number, player_name){
+    let new_point_listnode_element = document.createElement("li");
+    let new_point_list_increase_button = document.createElement("button");
+    let new_point_list_decrease_button = document.createElement("button");
+
+    new_point_listnode_element.innerText = player_name;
+    new_point_listnode_element.appendChild(new_point_list_increase_button);
+    new_point_listnode_element.appendChild(new_point_list_decrease_button);
+    this.point_list.appendChild(new_point_listnode_element);
+
+    new_point_listnode_element.classList.add("point_addition_listnode");
+    new_point_listnode_element.id = "point_addition_list_element" + ID_number;
+    new_point_list_increase_button.id = "point_list_increase_button_" + ID_number;
+    new_point_list_decrease_button.id = "point_list_decrease_button_" + ID_number;
+
+    new_point_list_increase_button.classList.add("point_addition_list_button");
+    new_point_list_increase_button.classList.add("point_increase");
+    new_point_list_increase_button.addEventListener('click', game.AddPointToPlayer);
+    new_point_list_increase_button.innerText = "+";
+
+    new_point_list_decrease_button.classList.add("point_addition_list_button");
+    new_point_list_decrease_button.classList.add("point_decrease");
+    new_point_list_decrease_button.addEventListener('click', game.AddPointToPlayer);
+    new_point_list_decrease_button.innerText = "-";
 }
 
 GetUnusedID(){
@@ -561,7 +560,7 @@ GetUnusedID(){
 SwitchPlayerDeletion(){
     if(this.player_deletion_active){
         this.player_deletion_active = false;
-        this.player_deletion.style.display = "none";
+        document.getElementById("player_deletion").style.display = "none";
 
         let button_element;
         
@@ -574,7 +573,7 @@ SwitchPlayerDeletion(){
     }
     else{
         this.player_deletion_active = true;
-        this.player_deletion.style.display = "block";
+        document.getElementById("player_deletion").style.display = "block";
     }
 }
 
@@ -604,6 +603,9 @@ RemovePlayersFromList(){
 }
 
 MarkButton(){
+
+    //EventListener
+    
     if(this.classList.contains("marked_button_delete") === false){
         this.classList.add("marked_button_delete");
     }
@@ -645,61 +647,59 @@ ClearPlayerList(){
 SwitchPointAddition(){
     if(this.point_addition_active){
         this.point_addition_active = false;
-        this.point_addition.style.display = "none";
+        document.getElementById("point_addition").style.display = "none";
     }
     else{
         this.point_addition_active = true;
-        this.point_addition.style.display = "block";
+        document.getElementById("point_addition").style.display = "block";
     }
 }
 
 AddPointToPlayer(){
-    let status;
-    let right_ID;
+
+    //EventListener
+    
+    let number;
+    let ID_number;
 
     if(this.classList.contains("point_increase")){
-        status = true;
+        number = 1;
         for(let i = 0; i < game.IDManager_array.length; i++){
             if(game.IDManager_array[i].GetIncreaseButtonID() === this.id){
-                right_ID = game.IDManager_array[i].GetID();
+                ID_number = game.IDManager_array[i].GetID();
                 break;
             }
         }
     }
     else if(this.classList.contains("point_decrease")){
-        status = false;
+        number = -1;
         for(let j = 0; j < game.IDManager_array.length; j++){
             if(game.IDManager_array[j].GetDecreaseButtonID() === this.id){
-                right_ID = game.IDManager_array[j].GetID();
+                ID_number = game.IDManager_array[j].GetID();
                 break;
             }
         }
     }
 
-    game.SwitchPointAddition();
-    game.PointAdditionByID(right_ID, status);
-    game.UpdateSpanWord(right_ID);
+    if(game.point_addition_multiple_changes_active === false){
+        game.SwitchPointAddition();
+    }
+    
+    game.PointAdditionByID(ID_number, number);
+    game.UpdateSpanWord(ID_number);
 }
 
-PointAdditionByID(right_ID, status){
-    let array_length = this.player_array.length;
+PointAdditionByID(ID_number, number){
+    let player;
 
-    if(status){
-        for(let i = 0; i < array_length; i++){
-            if(this.player_array[i].GetID() === right_ID){
-                this.player_array[i].ChangeCounter(1);
-                break;
-            }
+    for(let i = 0; i < this.player_array.length; i++){
+        if(this.player_array[i].GetID() === ID_number){
+            player = this.player_array[i];
+            break;
         }
     }
-    else{
-        for(let j = 0; j < array_length; j++){
-            if(this.player_array[j].GetID() === right_ID){
-                this.player_array[j].ChangeCounter(-1);
-                break;
-            }
-        }
-    }
+
+    player.UpdateCounter(number);
 }
 
 ClearPointList(){
@@ -712,31 +712,31 @@ ClearPointList(){
     }
 }
 
-SwitchPointAdditionMultipleChanges(){
-    if(this.point_addition_multiple_changes_active){
-        this.point_addition_multiple_changes_active = false;
-        this.point_addition_multiple_changes_button.style.backgroundColor = '#808080';
-    }
-    else{
-        this.point_addition_multiple_changes_active = true;
-        this.point_addition_multiple_changes_button.style.backgroundColor = '#ffff00';
-    }
-}
-
 UpdateSpanWord(ID_number){
     let array_length = this.IDManager_array.length;
     let player;
 
-    for(let j = 0; j < array_length; j++){
-        if(this.player_array[j].GetID() === ID_number){
-            player = this.player_array[j];
+    for(let i = 0; i < array_length; i++){
+        if(this.player_array[i].GetID() === ID_number){
+            player = this.player_array[i];
         }
     }
 
-    for(let i = 0; i < array_length; i++){
-        if(this.IDManager_array[i].GetID() === ID_number){
-            document.getElementById(this.IDManager_array[i].GetListSpanID()).textContent = player.GetWord();
+    for(let j = 0; j < array_length; j++){
+        if(this.IDManager_array[j].GetID() === ID_number){
+            document.getElementById(this.IDManager_array[j].GetListSpanID()).textContent = player.GetWord();
         }
+    }
+}
+
+SwitchPointAdditionMultipleChanges(){
+    if(this.point_addition_multiple_changes_active){
+        this.point_addition_multiple_changes_active = false;
+        document.getElementById("point_addition_multiple_changes_button").style.backgroundColor = '#808080';
+    }
+    else{
+        this.point_addition_multiple_changes_active = true;
+        document.getElementById("point_addition_multiple_changes_button").style.backgroundColor = '#ffff00';
     }
 }
 
@@ -747,11 +747,11 @@ ShowLeaderboard(){
 Warning_PlayerListTooLong(){
     if(this.warning_active){
         this.warning_active = false;
-        this.warning_player_list.style.display = "none";
+        document.getElementById("warning_player_list").style.display = "none";
     }
     else{
         this.warning_active = true;
-        this.warning_player_list.style.display = "block";
+        document.getElementById("warning_player_list").style.display = "block";
     }
 }
 };
