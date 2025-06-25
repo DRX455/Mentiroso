@@ -204,7 +204,7 @@ body{
 }
 #player_deletion_list{
     position: relative;
-    left: 59px;
+    left: 58px;
     width: 821px;
     font-size: 30px;
     color: rgb(0, 0, 0);
@@ -225,6 +225,8 @@ body{
     margin-left: 30px;
 }
 .player_deletion_list_button{
+    position: relative;
+    left: 210px;
     height: 50px;
     width: 400px;
     text-align: center;
@@ -250,7 +252,7 @@ body{
 }
 #point_addition_list{
     position: relative;
-    left: 59px;
+    left: 58px;
     width: 821px;
     font-size: 30px;
     color: rgb(0, 0, 0);
@@ -259,6 +261,8 @@ body{
     list-style: none;
 }
 .point_addition_button{
+    position: relative;
+    left: 12px;
     height: 50px;
     width: 200px;
     font-size: 20px;
@@ -266,7 +270,7 @@ body{
     color: rgb(0, 0, 0);
     background-color: rgb(128, 128, 128);
     border-radius: 10px;
-    margin-left: 100px;
+    margin-left: 30px;
 }
 .point_addition_listnode{
     height: 50px;
