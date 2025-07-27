@@ -1,23 +1,37 @@
-const DICE_VALUE = {
-    NONE: 0,
-    BLACK: 1,
-    RED: 2,
-    JACK: 3,
-    QUEEN: 4,
-    KING: 5,
-    ACE: 6
-}
-
-
-
 class Dice{
 
+open_dice_odds_array = [];
+hidden_dice_odds_array = [];
+individual_dice_odds_array = [];
+
 constructor(){
-    this.symbol = DICE_VALUE.NONE;
+    this.symbol_number = 0;
     this.is_marked = false;
     this.is_markable = false;
     this.is_rollable = true;
     this.is_hidden = false;
+
+    //Arrays
+
+    for(let i = 0; i < 6; i++){
+        this.open_dice_odds_array[i] = 5;
+    }
+
+    for(let j = 0; j < 6; j++){
+        this.hidden_dice_odds_array[j] = 5;
+    }
+
+    for(let k = 0; k < 6; k++){
+        this.individual_dice_odds_array[k] = 5;
+    }
+
+    //Dice-Odds
+    
+    this.open_shuffled_dices = 5;
+    this.open_shuffled_dices_active = false;
+    this.hidden_shuffled_dices = 5;
+    this.hidden_shuffled_dices_active = false;
+    this.total_dice_odds_count = 30;
 }
 
 GetIsMarked(){
@@ -36,19 +50,23 @@ GetIsHidden(){
     return this.is_hidden;
 }
 
-GetSymbol(){
-    return this.symbol;
+GetSymbolNumber(){
+    return this.symbol_number;
+}
+
+GetID(number){
+    switch(number){
+        case 0: return "dice_one";
+        case 1: return "dice_two";
+        case 2: return "dice_three";
+        case 3: return "dice_four";
+        case 4: return "dice_five";
+        default: return;
+    }
 }
 
 SetHiddenStatus(status){
     this.is_hidden = status;
-}
-
-ChangeHiddenImage(number){
-    if(this.is_hidden)
-        document.getElementById(this.GetID(number)).src = "Verdeckter-Würfel.png";
-    else
-        this.SetDiceImage(number);
 }
 
 SetRollableStatus(status){
@@ -73,72 +91,147 @@ SetIsMarkable(status){
 }
 
 SetDiceImage(number){
-    switch(this.GetSymbol()){
-        case DICE_VALUE.BLACK:
-            document.getElementById(this.GetID(number)).src = "Schwarzer-Würfel.png"; break;
-        case DICE_VALUE.RED:
-            document.getElementById(this.GetID(number)).src = "Roter-Würfel.png"; break;
-        case DICE_VALUE.JACK:
-            document.getElementById(this.GetID(number)).src = "Bube-Würfel.png"; break;
-        case DICE_VALUE.QUEEN:
-            document.getElementById(this.GetID(number)).src = "Dame-Würfel.png"; break;
-        case DICE_VALUE.KING:
-            document.getElementById(this.GetID(number)).src = "König-Würfel.png"; break;
-        case DICE_VALUE.ACE:
-            document.getElementById(this.GetID(number)).src = "Ass-Würfel.png"; break;
+    switch(this.GetSymbolNumber()){
+        case 1: document.getElementById(this.GetID(number)).src = "Schwarzer-Würfel.png"; break;
+        case 2: document.getElementById(this.GetID(number)).src = "Roter-Würfel.png"; break;
+        case 3: document.getElementById(this.GetID(number)).src = "Bube-Würfel.png"; break;
+        case 4: document.getElementById(this.GetID(number)).src = "Dame-Würfel.png"; break;
+        case 5: document.getElementById(this.GetID(number)).src = "König-Würfel.png"; break;
+        case 6: document.getElementById(this.GetID(number)).src = "Ass-Würfel.png"; break;
         default: break;
     }
 }
 
 SetMarkedImage(number){
-    switch(this.GetSymbol()){
-        case DICE_VALUE.BLACK:
-            document.getElementById(this.GetID(number)).src = "Schwarzer-Würfel-Markiert.png"; break;
-        case DICE_VALUE.RED:
-            document.getElementById(this.GetID(number)).src = "Roter-Würfel-Markiert.png"; break;
-        case DICE_VALUE.JACK:
-            document.getElementById(this.GetID(number)).src = "Bube-Würfel-Markiert.png"; break;
-        case DICE_VALUE.QUEEN:
-            document.getElementById(this.GetID(number)).src = "Dame-Würfel-Markiert.png"; break;
-        case DICE_VALUE.KING:
-            document.getElementById(this.GetID(number)).src = "König-Würfel-Markiert.png"; break;
-        case DICE_VALUE.ACE:
-            document.getElementById(this.GetID(number)).src = "Ass-Würfel-Markiert.png"; break;
+    switch(this.GetSymbolNumber()){
+        case 1: document.getElementById(this.GetID(number)).src = "Schwarzer-Würfel-Markiert.png"; break;
+        case 2: document.getElementById(this.GetID(number)).src = "Roter-Würfel-Markiert.png"; break;
+        case 3: document.getElementById(this.GetID(number)).src = "Bube-Würfel-Markiert.png"; break;
+        case 4: document.getElementById(this.GetID(number)).src = "Dame-Würfel-Markiert.png"; break;
+        case 5: document.getElementById(this.GetID(number)).src = "König-Würfel-Markiert.png"; break;
+        case 6: document.getElementById(this.GetID(number)).src = "Ass-Würfel-Markiert.png"; break;
         default: break;
     }
 }
 
-DiceRoll(number, status){
+DiceRoll(number, hidden, rollable){
     if(this.GetIsRollable()){
-        let random = Math.floor(Math.random() * 6) + 1;
-
-        switch(random){
-            case 1: this.symbol = DICE_VALUE.BLACK;break;
-            case 2: this.symbol = DICE_VALUE.RED; break;
-            case 3: this.symbol = DICE_VALUE.JACK; break;
-            case 4: this.symbol = DICE_VALUE.QUEEN; break;
-            case 5: this.symbol = DICE_VALUE.KING; break;
-            case 6: this.symbol = DICE_VALUE.ACE; break;
-            default: break;
-        }
-
+        if(hidden === false && this.open_shuffled_dices_active === true)
+            this.symbol_number = this.DiceRollRandomOpen();
+        else if(hidden === true && this.hidden_shuffled_dices_active === true)
+            this.symbol_number = this.DiceRollRandomHidden();
+        else
+            this.symbol_number = this.DiceRollRandomIndividual();
+        
         this.is_marked = false;
-        this.SetRollableStatus(false);
-        this.SetIsMarkable(false);
-        this.SetHiddenStatus(status);
+        this.SetRollableStatus(rollable);
+        this.SetIsMarkable(rollable);
+        this.SetHiddenStatus(hidden);
         this.ChangeHiddenImage(number);
     }
 }
 
-GetID(number){
-    switch(number){
-        case 0: return "dice_one";
-        case 1: return "dice_two";
-        case 2: return "dice_three";
-        case 3: return "dice_four";
-        case 4: return "dice_five";
-        default: return;
+DiceRollRandomOpen(){
+    let random_number = Math.floor(Math.random() * 30) + 1;
+    let limit = 0;
+
+    for(let i = 0; i < this.open_dice_odds_array.length; i++){
+        limit += this.open_dice_odds_array[i];
+        if(random_number <= limit)
+            return i + 1;
     }
+}
+
+DiceRollRandomHidden(){
+    let random_number = Math.floor(Math.random() * 30) + 1;
+    let limit = 0;
+
+    for(let i = 0; i < this.hidden_dice_odds_array.length; i++){
+        limit += this.hidden_dice_odds_array[i];
+        if(random_number <= limit)
+            return i + 1;
+    }
+}
+
+DiceRollRandomIndividual(){
+    let random_number = Math.floor(Math.random() * this.total_dice_odds_count) + 1;
+    let limit = 0;
+
+    for(let i = 0; i < this.individual_dice_odds_array.length; i++){
+        limit += this.individual_dice_odds_array[i];
+        if(random_number <= limit)
+            return i + 1;
+    }
+}
+
+UpdateOpenDiceOdds(number){
+    this.open_shuffled_dices += number;
+
+    switch(this.open_shuffled_dices){
+        case 0:  this.open_dice_odds_array = [8, 7, 6, 4, 3, 2]; break;
+        case 1:  this.open_dice_odds_array = [7, 7, 6, 4, 3, 3]; break;
+        case 2:  this.open_dice_odds_array = [7, 6, 6, 4, 4, 3]; break;
+        case 3:  this.open_dice_odds_array = [6, 6, 5, 5, 4, 4]; break;
+        case 4:  this.open_dice_odds_array = [6, 5, 5, 5, 5, 4]; break;
+        case 5:  this.open_dice_odds_array = [5, 5, 5, 5, 5, 5]; break;
+        case 6:  this.open_dice_odds_array = [4, 5, 5, 5, 5, 6]; break;
+        case 7:  this.open_dice_odds_array = [4, 4, 5, 5, 6, 6]; break;
+        case 8:  this.open_dice_odds_array = [3, 4, 4, 6, 6, 7]; break;
+        case 9:  this.open_dice_odds_array = [3, 3, 4, 6, 7, 7]; break;
+        case 10: this.open_dice_odds_array = [2, 3, 4, 6, 7, 8]; break;
+        default: break;
+    }
+
+    if(this.open_shuffled_dices === 5)
+        this.open_shuffled_dices_active = false;
+    else
+        this.open_shuffled_dices_active = true;
+}
+
+UpdateHiddenDiceOdds(number){
+    this.hidden_shuffled_dices += number;
+
+    switch(this.hidden_shuffled_dices){
+        case 0:  this.hidden_dice_odds_array = [8, 7, 6, 4, 3, 2]; break;
+        case 1:  this.hidden_dice_odds_array = [7, 7, 6, 4, 3, 3]; break;
+        case 2:  this.hidden_dice_odds_array = [7, 6, 6, 4, 4, 3]; break;
+        case 3:  this.hidden_dice_odds_array = [6, 6, 5, 5, 4, 4]; break;
+        case 4:  this.hidden_dice_odds_array = [6, 5, 5, 5, 5, 4]; break;
+        case 5:  this.hidden_dice_odds_array = [5, 5, 5, 5, 5, 5]; break;
+        case 6:  this.hidden_dice_odds_array = [4, 5, 5, 5, 5, 6]; break;
+        case 7:  this.hidden_dice_odds_array = [4, 4, 5, 5, 6, 6]; break;
+        case 8:  this.hidden_dice_odds_array = [3, 4, 4, 6, 6, 7]; break;
+        case 9:  this.hidden_dice_odds_array = [3, 3, 4, 6, 7, 7]; break;
+        case 10: this.hidden_dice_odds_array = [2, 3, 4, 6, 7, 8]; break;
+        default: break;
+    }
+
+    if(this.hidden_shuffled_dices === 5)
+        this.hidden_shuffled_dices_active = false;
+    else
+        this.hidden_shuffled_dices_active = true;
+}
+
+UpdateIndividualDiceOdds(ID_number, number){
+    this.individual_dice_odds_array[ID_number - 1] += number;
+    this.total_dice_odds_count += number;
+}
+
+ResetAllDiceOdds(){
+    this.open_shuffled_dices_active = false;
+    this.hidden_shuffled_dices_active = false;
+    this.total_dice_odds_count = 30;
+    
+    this.open_dice_odds_array = [5, 5, 5, 5, 5, 5];
+    this.hidden_dice_odds_array = [5, 5, 5, 5, 5, 5];
+    this.individual_dice_odds_array = [5, 5, 5, 5, 5, 5];
+}
+
+ChangeHiddenImage(number){
+    if(this.is_hidden)
+        document.getElementById(this.GetID(number)).src = "Verdeckter-Würfel.png";
+    else
+        this.SetDiceImage(number);
 }
 
 Cover_Reveal_Image(number, covered){
@@ -155,8 +248,8 @@ Cover_Reveal_Image(number, covered){
 
 class Player{
     
-constructor(ID_of_player){
-    this.player_ID = ID_of_player;
+constructor(ID_number){
+    this.player_ID = ID_number;
     this.counter = 0;
     this.word = "";
 }
@@ -169,7 +262,7 @@ GetCounter(){
     return this.counter;
 }
 
-    GetWord(){
+GetWord(){
     return this.word;
 }
 
@@ -178,7 +271,7 @@ UpdateCounter(number){
         this.counter += 1;
         this.UpdateWord();
     }    
-    if(number === -1 && this.counter > 0){
+    else if(number === -1 && this.counter > 0){
         this.counter -= 1;
         this.UpdateWord();
     }
@@ -282,6 +375,8 @@ constructor(){
 
     this.rules_explanation_active = false;
     this.point_system_active = false;
+    this.special_rules_active = false;
+    this.special_dice_odds_active = false;
 
     //List-Booleans
     
@@ -295,6 +390,21 @@ constructor(){
     this.player_list_list = document.getElementById("player_list_list");
     this.player_deletion_list = document.getElementById("player_deletion_list");
     this.point_list = document.getElementById("point_addition_list");
+
+    //Special-Rules
+
+    this.reshuffle_at_start_active = false;
+
+    //Dice-Odds
+
+    this.open_shuffled_dices_odds = 5;
+    this.hidden_shuffled_dices_odds = 5;
+    this.black_dice_odds = 5;
+    this.red_dice_odds = 5;
+    this.jack_dice_odds = 5;
+    this.queen_dice_odds = 5;
+    this.king_dice_odds = 5;
+    this.ace_dice_odds = 5;
     
     //Extra
     
@@ -311,11 +421,17 @@ Restart(){
         this.dice_array[i].SetRollableStatus(true);
     }
 
-    this.dice_array[0].DiceRoll(0, false);
-    this.dice_array[1].DiceRoll(1, false);
+    if(this.reshuffle_at_start_active){
+        this.dice_array[0].DiceRoll(0, false, true);
+        this.dice_array[1].DiceRoll(1, false, true);
+    }
+    else if(this.reshuffle_at_start_active === false){
+        this.dice_array[0].DiceRoll(0, false, false);
+        this.dice_array[1].DiceRoll(1, false, false);
+    }
 
     for(let j = 2; j < 5; j++){
-        this.dice_array[j].DiceRoll(j, true);
+        this.dice_array[j].DiceRoll(j, true, false);
     }
 }
 
@@ -331,7 +447,7 @@ Shuffle_Open(){
     if(this.CheckIfMarked()){
         for(let i = 0; i < 5; i++){
             if(this.dice_array[i].GetIsMarked()){
-                this.dice_array[i].DiceRoll(i, false);
+                this.dice_array[i].DiceRoll(i, false, false);
                 this.is_confirmable = true;    
             }
         }
@@ -348,7 +464,7 @@ Shuffle_Hidden(){
             }
 
             if(this.dice_array[i].GetIsMarked()){
-                this.dice_array[i].DiceRoll(i, true);
+                this.dice_array[i].DiceRoll(i, true, false);
                 this.is_confirmable = true;    
             }
         }
@@ -407,7 +523,7 @@ Confirm(){
 }
 
 MarkDice(number){
-    if(this.dice_array[number].GetIsMarkable())
+    if(this.dice_array[number].GetIsMarkable() && this.is_confirmed === false)
         this.dice_array[number].SetIsMarked(number);
 }
 
@@ -457,6 +573,189 @@ SwitchPointSystem(){
         document.getElementById("player_list").style.display = "block";
         document.getElementById("point_system_button").style.backgroundColor = '#ffff00';
         this.CloseSettings();
+    }
+}
+
+OpenSpecialRules(){
+    this.special_rules_active = true;
+    document.getElementById("special_rules").style.display = "block";
+}
+
+CloseSpecialRules(){
+    this.special_rules_active = false;
+    document.getElementById("special_rules").style.display = "none";
+}
+
+SwitchSpecialRules(){
+    if(this.special_rules_active){
+        this.CloseSpecialRules();
+        this.OpenSettings();
+    }
+    else{
+        this.OpenSpecialRules();
+        this.CloseSettings();
+    }
+}
+
+SwitchReshuffleAtStart(){
+    if(this.reshuffle_at_start_active){
+        this.reshuffle_at_start_active = false;
+        document.getElementById("reshuffle_at_start_button").style.backgroundColor = '#808080';
+    }
+    else{
+        this.reshuffle_at_start_active = true;
+        document.getElementById("reshuffle_at_start_button").style.backgroundColor = '#ffff00';
+    }
+}
+
+SwitchSpecialDiceOdds(){
+    if(this.special_dice_odds_active){
+        this.special_dice_odds_active = false;
+        document.getElementById("special_dice_odds").style.display = "none";
+        this.OpenSpecialRules();
+    }
+    else{
+        this.special_dice_odds_active = true;
+        document.getElementById("special_dice_odds").style.display = "block";
+        this.CloseSpecialRules();
+    }
+}
+
+UpdateDiceOdds(ID_number, number){
+
+switch(ID_number){
+    case 1: if(this.CheckUpdateDiceOdds(this.open_shuffled_dices_odds, number)){
+                if(number === 1){
+                    this.open_shuffled_dices_odds++;
+                    this.UpdateDiceOddsOfDiceArray(1, 1);
+                }
+                else{
+                    this.open_shuffled_dices_odds--;
+                    this.UpdateDiceOddsOfDiceArray(1, -1);
+                }
+                document.getElementById("dice_odds_open_span").innerText = this.open_shuffled_dices_odds;
+            } break;
+    case 2: if(this.CheckUpdateDiceOdds(this.hidden_shuffled_dices_odds, number)){
+                if(number === 1){
+                    this.hidden_shuffled_dices_odds++;
+                    this.UpdateDiceOddsOfDiceArray(2, 1);
+                }
+                else{
+                    this.hidden_shuffled_dices_odds--;
+                    this.UpdateDiceOddsOfDiceArray(2, -1);
+                }
+                document.getElementById("dice_odds_hidden_span").innerText = this.hidden_shuffled_dices_odds;
+            } break;
+    case 3: if(this.CheckUpdateDiceOdds(this.black_dice_odds, number)){
+                if(number === 1){
+                    this.black_dice_odds++;
+                    this.UpdateDiceOddsOfDiceArray(3, 1);
+                }
+                else{
+                    this.black_dice_odds--;
+                    this.UpdateDiceOddsOfDiceArray(3, -1);
+                }
+                document.getElementById("dice_odds_black_span").innerText = this.black_dice_odds;
+            } break;
+    case 4: if(this.CheckUpdateDiceOdds(this.red_dice_odds, number)){
+                if(number === 1){
+                    this.red_dice_odds++;
+                    this.UpdateDiceOddsOfDiceArray(4, 1);
+                }
+                else{
+                    this.red_dice_odds--;
+                    this.UpdateDiceOddsOfDiceArray(4, -1);
+                }
+                document.getElementById("dice_odds_red_span").innerText = this.red_dice_odds;
+            } break;
+    case 5: if(this.CheckUpdateDiceOdds(this.jack_dice_odds, number)){
+                if(number === 1){
+                    this.jack_dice_odds++;
+                    this.UpdateDiceOddsOfDiceArray(5, 1);
+                }
+                else{
+                    this.jack_dice_odds--;
+                    this.UpdateDiceOddsOfDiceArray(5, -1);
+                }
+                document.getElementById("dice_odds_jack_span").innerText = this.jack_dice_odds;
+            } break;
+    case 6: if(this.CheckUpdateDiceOdds(this.queen_dice_odds, number)){
+                if(number === 1){
+                    this.queen_dice_odds++;
+                    this.UpdateDiceOddsOfDiceArray(6, 1);
+                }
+                else{
+                    this.queen_dice_odds--;
+                    this.UpdateDiceOddsOfDiceArray(6, -1);
+                }
+                document.getElementById("dice_odds_queen_span").innerText = this.queen_dice_odds;
+            } break;
+    case 7: if(this.CheckUpdateDiceOdds(this.king_dice_odds, number)){
+                if(number === 1){
+                    this.king_dice_odds++;
+                    this.UpdateDiceOddsOfDiceArray(7, 1);
+                }
+                else{
+                    this.king_dice_odds--;
+                    this.UpdateDiceOddsOfDiceArray(7, -1);
+                }
+                document.getElementById("dice_odds_king_span").innerText = this.king_dice_odds;
+            } break;
+    case 8: if(this.CheckUpdateDiceOdds(this.ace_dice_odds, number)){
+                if(number === 1){
+                    this.ace_dice_odds++;
+                    this.UpdateDiceOddsOfDiceArray(8, 1);
+                }
+                else{
+                    this.ace_dice_odds--;
+                    this.UpdateDiceOddsOfDiceArray(8, -1);
+                }
+                document.getElementById("dice_odds_ace_span").innerText = this.ace_dice_odds;
+            } break;
+    default: break;
+}
+}
+
+CheckUpdateDiceOdds(dice_odds, number){
+    if(number === 1 && dice_odds < 10)
+        return true;
+    else if(number === -1 && dice_odds > 0)
+        return true;
+    return false;
+}
+
+UpdateDiceOddsOfDiceArray(ID_number, number){
+    for(let i = 0; i < this.dice_array.length; i++){
+        if(ID_number === 1)
+            this.dice_array[i].UpdateOpenDiceOdds(number);
+        else if(ID_number === 2)
+            this.dice_array[i].UpdateHiddenDiceOdds(number);
+        else
+            this.dice_array[i].UpdateIndividualDiceOdds(ID_number - 2, number);
+    }
+}
+
+ResetAllDiceOdds(){
+    this.open_shuffled_dices_odds = 5;
+    this.hidden_shuffled_dices_odds = 5;
+    this.black_dice_odds = 5;
+    this.red_dice_odds = 5;
+    this.jack_dice_odds = 5;
+    this.queen_dice_odds = 5;
+    this.king_dice_odds = 5;
+    this.ace_dice_odds = 5;
+
+    document.getElementById("dice_odds_open_span").innerText = 5;
+    document.getElementById("dice_odds_hidden_span").innerText = 5;
+    document.getElementById("dice_odds_black_span").innerText = 5;
+    document.getElementById("dice_odds_red_span").innerText = 5;
+    document.getElementById("dice_odds_jack_span").innerText = 5;
+    document.getElementById("dice_odds_queen_span").innerText = 5;
+    document.getElementById("dice_odds_king_span").innerText = 5;
+    document.getElementById("dice_odds_ace_span").innerText = 5;
+
+    for(let i = 0; i < this.dice_array.length; i++){
+        this.dice_array[i].ResetAllDiceOdds();
     }
 }
 
@@ -605,7 +904,7 @@ RemovePlayersFromList(){
 MarkButton(){
 
     //EventListener
-    
+
     if(this.classList.contains("marked_button_delete") === false){
         this.classList.add("marked_button_delete");
     }
@@ -648,6 +947,8 @@ SwitchPointAddition(){
     if(this.point_addition_active){
         this.point_addition_active = false;
         document.getElementById("point_addition").style.display = "none";
+        this.point_addition_multiple_changes_active = false;
+        document.getElementById("point_addition_multiple_changes_button").style.backgroundColor = '#808080';
     }
     else{
         this.point_addition_active = true;
@@ -658,7 +959,7 @@ SwitchPointAddition(){
 AddPointToPlayer(){
 
     //EventListener
-    
+
     let number;
     let ID_number;
 
@@ -684,7 +985,7 @@ AddPointToPlayer(){
     if(game.point_addition_multiple_changes_active === false){
         game.SwitchPointAddition();
     }
-    
+
     game.PointAdditionByID(ID_number, number);
     game.UpdateSpanWord(ID_number);
 }
@@ -716,15 +1017,15 @@ UpdateSpanWord(ID_number){
     let array_length = this.IDManager_array.length;
     let player;
 
-    for(let i = 0; i < array_length; i++){
-        if(this.player_array[i].GetID() === ID_number){
-            player = this.player_array[i];
+    for(let j = 0; j < array_length; j++){
+        if(this.player_array[j].GetID() === ID_number){
+            player = this.player_array[j];
         }
     }
 
-    for(let j = 0; j < array_length; j++){
-        if(this.IDManager_array[j].GetID() === ID_number){
-            document.getElementById(this.IDManager_array[j].GetListSpanID()).textContent = player.GetWord();
+    for(let i = 0; i < array_length; i++){
+        if(this.IDManager_array[i].GetID() === ID_number){
+            document.getElementById(this.IDManager_array[i].GetListSpanID()).textContent = player.GetWord();
         }
     }
 }
