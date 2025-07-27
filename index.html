@@ -18,9 +18,11 @@
         <br>
         <button id="point_system_button" class="settings_button" onclick="game.SwitchPointSystem()">Play With Points</button>
         <br>
+        <button class="settings_button" onclick="game.SwitchSpecialRules()">Special Rules</button>
+        <br>
         <button class="settings_button" onclick="game.ShowLeaderboard()">Leaderboard (Coming Soon)</button>
         <br>
-        <button id="close_settings_button" class="settings_button" onclick="game.CloseSettings()">Close Settings</button>
+        <button class="settings_button" onclick="game.CloseSettings()">Close Settings</button>
     </div>
 
     <div id="rules_explanation_english" class="rules_explanation">
@@ -83,6 +85,67 @@
         <button class="rules_explanation_button" onclick="game.SwitchRulesExplanation()">Close</button>
     </div>
 
+    <div id="special_rules">
+        <h1 class="header">SPECIAL RULES</h1>
+        <button id="reshuffle_at_start_button" class="special_rules_button" onclick="game.SwitchReshuffleAtStart()">Reshuffle At Start</button>
+        <br>
+        <button class="special_rules_button" onclick="game.SwitchSpecialDiceOdds()">Change Dice Odds</button>
+        <br>
+        <button class="special_rules_button" onclick="game.SwitchSpecialRules()">Back</button>
+    </div>
+
+    <div id="special_dice_odds">
+        <h1 class="header">DICE ODDS</h1>
+        <div id="dice_odds_options_display_div">
+            <div class="dice_odds_options_div"> Open/Hidden Shuffled Dices (Primary):
+            </div>
+            <div class="dice_odds_options_div">Open Shuffled Dices
+                <button class="dice_odds_increase_button" onclick="game.UpdateDiceOdds(1, 1)">+</button>
+                <span id="dice_odds_open_span" class="dice_odds_number_span">5</span>
+                <button class="dice_odds_decrease_button" onclick="game.UpdateDiceOdds(1, -1)">-</button>
+            </div>
+            <div class="dice_odds_options_div">Hidden Shuffled Dices
+                <button class="dice_odds_increase_button" onclick="game.UpdateDiceOdds(2, 1)">+</button>
+                <span id="dice_odds_hidden_span" class="dice_odds_number_span">5</span>
+                <button class="dice_odds_decrease_button" onclick="game.UpdateDiceOdds(2, -1)">-</button>
+            </div>
+            <div class="dice_odds_options_div">Individual Dices (Secondary):
+            </div>
+            <div class="dice_odds_options_div">Black
+                <button class="dice_odds_increase_button" onclick="game.UpdateDiceOdds(3, 1)">+</button>
+                <span id="dice_odds_black_span" class="dice_odds_number_span">5</span>
+                <button class="dice_odds_decrease_button" onclick="game.UpdateDiceOdds(3, -1)">-</button>
+            </div>
+            <div class="dice_odds_options_div">Red
+                <button class="dice_odds_increase_button" onclick="game.UpdateDiceOdds(4, 1)">+</button>
+                <span id="dice_odds_red_span" class="dice_odds_number_span">5</span>
+                <button class="dice_odds_decrease_button" onclick="game.UpdateDiceOdds(4, -1)">-</button>
+            </div>
+            <div class="dice_odds_options_div">Jack
+                <button class="dice_odds_increase_button" onclick="game.UpdateDiceOdds(5, 1)">+</button>
+                <span id="dice_odds_jack_span" class="dice_odds_number_span">5</span>
+                <button class="dice_odds_decrease_button" onclick="game.UpdateDiceOdds(5, -1)">-</button>
+            </div>
+            <div class="dice_odds_options_div">Queen
+                <button class="dice_odds_increase_button" onclick="game.UpdateDiceOdds(6, 1)">+</button>
+                <span id="dice_odds_queen_span" class="dice_odds_number_span">5</span>
+                <button class="dice_odds_decrease_button" onclick="game.UpdateDiceOdds(6, -1)">-</button>
+            </div>
+            <div class="dice_odds_options_div">King
+                <button class="dice_odds_increase_button" onclick="game.UpdateDiceOdds(7, 1)">+</button>
+                <span id="dice_odds_king_span" class="dice_odds_number_span">5</span>
+                <button class="dice_odds_decrease_button" onclick="game.UpdateDiceOdds(7, -1)">-</button>
+            </div>
+            <div class="dice_odds_options_div">Ace
+                <button class="dice_odds_increase_button" onclick="game.UpdateDiceOdds(8, 1)">+</button>
+                <span id="dice_odds_ace_span" class="dice_odds_number_span">5</span>
+                <button class="dice_odds_decrease_button" onclick="game.UpdateDiceOdds(8, -1)">-</button>
+            </div>
+            <button class="dice_odds_button" onclick="game.ResetAllDiceOdds()">Reset</button>
+            <button class="dice_odds_button" onclick="game.SwitchSpecialDiceOdds()">Back</button>
+        </div>
+    </div>
+
     <div id="leaderboard">
         <h1 class="header">Leaderboard</h1>
         <br>
@@ -110,7 +173,7 @@
     </div>
 
     <div id="player_list">
-        <ul id="player_list_list"> List:
+        <ul id="player_list_list"> Player-List:
             <button class="player_list_button" onclick="game.SwitchPlayerAddition()">Add Player</button>
             <button class="player_list_button" onclick="game.SwitchPlayerDeletion()">Remove Player</button>
             <button class="player_list_button" onclick="game.SwitchPointAddition()">Add Point</button>
