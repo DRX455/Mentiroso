@@ -396,7 +396,7 @@ constructor(){
 
     this.reshuffle_at_start_active = false;
     this.start_open_dices_counter = 2;
-    this.schwaebischer_active = false;
+    this.saechsischer_active = false;
     this.im_trippin_active = false;
 
     //Dice-Odds
@@ -629,15 +629,15 @@ SwitchReshuffleAtStart(){
     }
 }
 
-SwitchSchwaebischer(){
-    if(this.schwaebischer_active){
-        this.schwaebischer_active = false;
-        document.getElementById("schwaebischer_button").style.backgroundColor = '#808080';
+SwitchSaechsischer(){
+    if(this.saechsischer_active){
+        this.saechsischer_active = false;
+        document.getElementById("saechsischer_button").style.backgroundColor = '#808080';
         this.SwitchOpenDicesCounterButton();
     }
     else{
-        this.schwaebischer_active = true;
-        document.getElementById("schwaebischer_button").style.backgroundColor = '#ffff00';
+        this.saechsischer_active = true;
+        document.getElementById("saechsischer_button").style.backgroundColor = '#ffff00';
         this.SwitchOpenDicesCounterButton();
     }
 }
@@ -656,7 +656,7 @@ SwitchImTrippin(){
 }
 
 SwitchOpenDicesCounterButton(){
-    if(this.schwaebischer_active || this.im_trippin_active){
+    if(this.saechsischer_active || this.im_trippin_active){
         document.getElementById("open_dices_counter_button").style.display = "block";
     }
     else
@@ -665,7 +665,7 @@ SwitchOpenDicesCounterButton(){
 
 AddToOpenDicesCounter(){
     switch(this.start_open_dices_counter){
-        case 2: if(this.schwaebischer_active){
+        case 2: if(this.saechsischer_active){
                     this.start_open_dices_counter = 3;
                     document.getElementById("open_dices_counter_button").innerText = "3 Dices";
                 }
