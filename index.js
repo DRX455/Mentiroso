@@ -365,20 +365,21 @@ constructor(){
         this.ID_array[j] = false;
     }
 
-    //Game-Logic-Booleans
+    //Game-Logic
 
     this.is_confirmed = false;
     this.is_confirmable = true;
     this.is_covered = true;
+    this.open_shuffled_dices_counter = 0;
 
-    //Settings-Booleans
+    //Settings
 
     this.rules_explanation_active = false;
     this.point_system_active = false;
     this.special_rules_active = false;
     this.special_dice_odds_active = false;
 
-    //List-Booleans
+    //Lists
     
     this.player_addition_active = false;
     this.player_deletion_active = false;
@@ -394,6 +395,9 @@ constructor(){
     //Special-Rules
 
     this.reshuffle_at_start_active = false;
+    this.start_open_dices_counter = 2;
+    this.schwaebischer_active = false;
+    this.im_trippin_active = false;
 
     //Dice-Odds
 
@@ -415,47 +419,62 @@ constructor(){
 Restart(){
     this.is_confirmable = true;
     this.is_confirmed = false;
+    this.open_shuffled_dices_counter = 0;
     this.ChangeConfirmButton(false);
-
+    
     for(let i = 0; i < 5; i++){
         this.dice_array[i].SetRollableStatus(true);
     }
 
     if(this.reshuffle_at_start_active){
-        this.dice_array[0].DiceRoll(0, false, true);
-        this.dice_array[1].DiceRoll(1, false, true);
+        for(let j = 0; j < this.start_open_dices_counter; j++){
+            this.dice_array[j].DiceRoll(j, false, true);
+        }
     }
     else if(this.reshuffle_at_start_active === false){
-        this.dice_array[0].DiceRoll(0, false, false);
-        this.dice_array[1].DiceRoll(1, false, false);
+        for(let j = 0; j < this.start_open_dices_counter; j++){
+            this.dice_array[j].DiceRoll(j, false, false);
+        }
     }
 
-    for(let j = 2; j < 5; j++){
-        this.dice_array[j].DiceRoll(j, true, false);
+    for(let k = this.start_open_dices_counter; k < 5; k++){
+        this.dice_array[k].DiceRoll(k, true, false);
     }
 }
 
-CheckIfMarked(){
+CheckMarkedDices(hidden){
+    let counter = 0;
+
     for(let i = 0; i < 5; i++){
         if(this.dice_array[i].GetIsMarked())
-            return true;
+            counter++;
     }
-    return false;
+
+    if(hidden){
+        if(counter > 0 && counter < 4)
+            return true;
+        return false;
+    }
+    else if(hidden === false){
+        if(counter > 0 && counter < 5)
+            return true;
+        return false;
+    }
 }
 
 Shuffle_Open(){
-    if(this.CheckIfMarked()){
+    if(this.CheckMarkedDices(false)){
         for(let i = 0; i < 5; i++){
-            if(this.dice_array[i].GetIsMarked()){
+            if(this.dice_array[i].GetIsMarked() && this.open_shuffled_dices_counter < 4){
                 this.dice_array[i].DiceRoll(i, false, false);
-                this.is_confirmable = true;    
+                this.open_shuffled_dices_counter++;
             }
         }
     }
 }
 
 Shuffle_Hidden(){
-    if(this.CheckIfMarked()){
+    if(this.CheckMarkedDices(true)){
         for(let i = 0; i < 5; i++)
         {
             if(this.dice_array[i].GetIsHidden()){
@@ -472,6 +491,8 @@ Shuffle_Hidden(){
 }
 
 Reset(){
+    this.open_shuffled_dices_counter = 0;
+
     for(let i = 0; i < 5; i++){
         this.dice_array[i].SetRollableStatus(true);
         this.dice_array[i].SetIsMarkable(true);
@@ -605,6 +626,65 @@ SwitchReshuffleAtStart(){
     else{
         this.reshuffle_at_start_active = true;
         document.getElementById("reshuffle_at_start_button").style.backgroundColor = '#ffff00';
+    }
+}
+
+SwitchSchwaebischer(){
+    if(this.schwaebischer_active){
+        this.schwaebischer_active = false;
+        document.getElementById("schwaebischer_button").style.backgroundColor = '#808080';
+        this.SwitchOpenDicesCounterButton();
+    }
+    else{
+        this.schwaebischer_active = true;
+        document.getElementById("schwaebischer_button").style.backgroundColor = '#ffff00';
+        this.SwitchOpenDicesCounterButton();
+    }
+}
+
+SwitchImTrippin(){
+    if(this.im_trippin_active){
+        this.im_trippin_active = false;
+        document.getElementById("im_trippin_button").style.backgroundColor = '#808080';
+        this.SwitchOpenDicesCounterButton();
+    }
+    else{
+        this.im_trippin_active = true;
+        document.getElementById("im_trippin_button").style.backgroundColor = '#ffff00';
+        this.SwitchOpenDicesCounterButton();
+    }
+}
+
+SwitchOpenDicesCounterButton(){
+    if(this.schwaebischer_active || this.im_trippin_active){
+        document.getElementById("open_dices_counter_button").style.display = "block";
+    }
+    else
+        document.getElementById("open_dices_counter_button").style.display = "none";
+}
+
+AddToOpenDicesCounter(){
+    switch(this.start_open_dices_counter){
+        case 2: if(this.schwaebischer_active){
+                    this.start_open_dices_counter = 3;
+                    document.getElementById("open_dices_counter_button").innerText = "3 Dices";
+                }
+                else if(this.im_trippin_active){
+                    this.start_open_dices_counter = 4;
+                    document.getElementById("open_dices_counter_button").innerText = "4 Dices";
+                } break;
+        case 3: if(this.im_trippin_active){
+                    this.start_open_dices_counter = 4;
+                    document.getElementById("open_dices_counter_button").innerText = "4 Dices";
+                }
+                else{
+                    this.start_open_dices_counter = 2;
+                    document.getElementById("open_dices_counter_button").innerText = "2 Dices";
+                } break;
+        case 4: this.start_open_dices_counter = 2;
+                document.getElementById("open_dices_counter_button").innerText = "2 Dices";
+                break;
+        default: break;
     }
 }
 
