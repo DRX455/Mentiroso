@@ -89,6 +89,10 @@
         <h1 class="header">SPECIAL RULES</h1>
         <button id="reshuffle_at_start_button" class="special_rules_button" onclick="game.SwitchReshuffleAtStart()">Reshuffle At Start</button>
         <br>
+        <button id="schwaebischer_button" class="special_rules_button" onclick="game.SwitchSchwaebischer()">"Der Schwäbische"</button>
+        <br>
+        <button id="im_trippin_button" class="special_rules_button" onclick="game.SwitchImTrippin()">"I'm Trippin"</button>
+        <br>
         <button class="special_rules_button" onclick="game.SwitchSpecialDiceOdds()">Change Dice Odds</button>
         <br>
         <button class="special_rules_button" onclick="game.SwitchSpecialRules()">Back</button>
@@ -151,7 +155,10 @@
         <br>
     </div>
 
-    <br>
+    <div>
+        <button id="open_dices_counter_button" onclick="game.AddToOpenDicesCounter()">2 Dices</button>
+    </div>
+
     <div id="play_button_layout">
         <button class="play_button" onclick="game.Restart()"> Start / Restart </button>
         <button class="play_button" onclick="game.Shuffle_Open()"> Shuffle Open </button>
